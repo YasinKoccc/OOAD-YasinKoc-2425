@@ -18,6 +18,9 @@
         <RadioButton x:Name="rdbBilal" Content="Bilal" HorizontalAlignment="Left" Margin="194,171,0,0" VerticalAlignment="Top"/>
         <RadioButton x:Name="rdbChelsey" Content="Chelsey" HorizontalAlignment="Left" Margin="262,171,0,0" VerticalAlignment="Top"/>
         <Button x:Name="btnToevoegen" Content="Toevoegen &gt;" HorizontalAlignment="Left" Margin="214,246,0,0" VerticalAlignment="Top" Width="108" Height="35"/>
-
+        <Button x:Name="btnTerugzetten" Content="Terugzetten" HorizontalAlignment="Left" Margin="439,319,0,0" VerticalAlignment="Top" Height="33" Width="113"/>
+        <Button x:Name="btnVerwijderen" Content="Verwijderen" HorizontalAlignment="Left" Margin="570,319,0,0" VerticalAlignment="Top" Height="33" Width="113"/>
+        <Label x:Name="lblerror" Content="" HorizontalAlignment="Left" Margin="47,359,0,0" VerticalAlignment="Top" Foreground="Red"/>
+        <ListBox x:Name="lstTaken" HorizontalAlignment="Left" Margin="390,44,0,0" VerticalAlignment="Top" Height="244" Width="344" BorderThickness="1" BorderBrush="Gray"/>
     </Grid>
 </Window>
