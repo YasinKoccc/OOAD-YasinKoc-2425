@@ -1,0 +1,23 @@
+﻿<Window x:Class="WpfTaken.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfTaken"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Label x:Name="lbltaak" Content="Taak:" HorizontalAlignment="Left" Margin="48,40,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblprioriteit" Content="Prioriteit:" HorizontalAlignment="Left" Margin="48,80,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lbldeadline" Content="Deadline:" HorizontalAlignment="Left" Margin="48,123,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lbldoor" Content="Door:" HorizontalAlignment="Left" Margin="48,165,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txttaak" HorizontalAlignment="Left" Margin="124,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="198"/>
+        <ComboBox x:Name="cmbPrioriteit" HorizontalAlignment="Left" Margin="124,84,0,0" VerticalAlignment="Top" Width="198"/>
+        <DatePicker x:Name="DateDeadline" HorizontalAlignment="Left" Margin="124,124,0,0" VerticalAlignment="Top" Width="198"/>
+        <RadioButton x:Name="rdbAdam" Content="Adam" HorizontalAlignment="Left" Margin="124,171,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="rdbBilal" Content="Bilal" HorizontalAlignment="Left" Margin="194,171,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="rdbChelsey" Content="Chelsey" HorizontalAlignment="Left" Margin="262,171,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="btnToevoegen" Content="Toevoegen &gt;" HorizontalAlignment="Left" Margin="214,246,0,0" VerticalAlignment="Top" Width="108" Height="35"/>
+
+    </Grid>
+</Window>
