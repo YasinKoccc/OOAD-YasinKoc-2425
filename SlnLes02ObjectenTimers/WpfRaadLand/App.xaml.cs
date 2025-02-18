@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace WpfLandenRaden
+namespace WpfRaadLand
 {
     /// <summary>
     /// Interaction logic for App.xaml

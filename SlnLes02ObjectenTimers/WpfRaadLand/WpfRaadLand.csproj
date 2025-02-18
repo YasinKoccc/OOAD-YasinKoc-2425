@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="WpfRaadLand materiaal\argentina.png" />
+    <None Remove="WpfRaadLand materiaal\finland.png" />
+    <None Remove="WpfRaadLand materiaal\japan.png" />
+    <None Remove="WpfRaadLand materiaal\marokko.png" />
+    <None Remove="WpfRaadLand materiaal\nieuwzeeland.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="WpfRaadLand materiaal\argentina.png" />
+    <Resource Include="WpfRaadLand materiaal\finland.png" />
+    <Resource Include="WpfRaadLand materiaal\japan.png" />
+    <Resource Include="WpfRaadLand materiaal\marokko.png" />
+    <Resource Include="WpfRaadLand materiaal\nieuwzeeland.png" />
+  </ItemGroup>
+
+</Project>
