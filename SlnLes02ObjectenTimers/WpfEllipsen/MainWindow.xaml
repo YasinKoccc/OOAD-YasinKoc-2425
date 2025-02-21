@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfEllipsen"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="WpfElipsen" Height="450" Width="800">
     <Grid>
-        <Canvas x:Name="canvas1" HorizontalAlignment="Left" Height="255" Margin="10,95,0,0" VerticalAlignment="Top" Width="700"/>
+        <Canvas x:Name="cnvCanvas" HorizontalAlignment="Left" Height="255" Margin="10,95,0,0" VerticalAlignment="Top" Width="700"/>
         <Button x:Name="btnTekenen" Content="TEKENEN" HorizontalAlignment="Left" Margin="540,45,0,0" VerticalAlignment="Top" Width="138" Height="30" FontWeight="Bold" Click="btnTekenen_Click" />
     </Grid>
 </Window>
