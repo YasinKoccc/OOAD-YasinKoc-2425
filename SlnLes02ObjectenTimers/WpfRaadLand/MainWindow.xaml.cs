@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -74,13 +75,13 @@ namespace WpfRaadLand
 
             // Toon de vraag
             txtResult.Text = $"Duid {correctAnswer} aan!";
-            progressBar.Value = 100;
+            pbProgressBar.Value = 100;
         }
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
             double timeLeft = MaxTime - stopwatch.Elapsed.TotalSeconds;
-            progressBar.Value = Math.Max(0, (timeLeft / MaxTime) * 100);
+            pbProgressBar.Value = Math.Max(0, (timeLeft / MaxTime) * 100);
 
             if (timeLeft <= 0)
             {
@@ -107,6 +108,9 @@ namespace WpfRaadLand
             txtResult.Text = isCorrect ? "Correct! " : "Fout! ";
             txtResult.Text += $"Je hebt {correctCount}/{vraagNummer} juist in gemiddeld {averageTime:F1}s";
 
+            // Geluid afspelen
+            PlaySound(isCorrect ? "Sounds/right.wav" : "Sounds/wrong.wav");
+
             btnStart.IsEnabled = true;
 
             vraagNummer++;
@@ -116,6 +120,17 @@ namespace WpfRaadLand
                 correctCount = 0;
                 antwoordtijden.Clear();
             }
+        }
+
+        private void PlaySound(string soundFile)
+        {
+            string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, soundFile);
+            if (File.Exists(fullPath))
+            {
+                SoundPlayer player = new SoundPlayer(fullPath);
+                player.Play();
+            }
+            
         }
 
         private void Image_MouseUp(object sender, MouseButtonEventArgs e)
