@@ -44,19 +44,22 @@ namespace WpfMatchFiles
                 return;
             }
 
+            List<string> triplets1;
+            List<string> triplets2;
+
             try
             {
-                var triplets1 = LeesTriplets(txtBestand1.Text);
-                var triplets2 = LeesTriplets(txtBestand2.Text);
-
-                double overeenkomst = BerekenOvereenkomst(triplets1, triplets2);
-
-                txtResultaat.Text = $"overeenkomst: {overeenkomst:F0}%";
+                triplets1 = LeesTriplets(txtBestand1.Text);
+                triplets2 = LeesTriplets(txtBestand2.Text);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Er is een fout opgetreden: {ex.Message}", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
+
+            double overeenkomst = BerekenOvereenkomst(triplets1, triplets2);
+            txtResultaat.Text = $"overeenkomst: {overeenkomst:F0}%";
         }
 
         private string OpenBestand()
@@ -77,15 +80,22 @@ namespace WpfMatchFiles
 
         private List<string> LeesTriplets(string path)
         {
-            string tekst = File.ReadAllText(path);
+            string tekst;
+            try
+            {
+                tekst = File.ReadAllText(path);
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show($"Fout bij het lezen van het bestand: {ex.Message}", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                return new List<string>();
+            }
 
             tekst = Regex.Replace(tekst, "[^a-zA-Z]", " ");
-
             tekst = Regex.Replace(tekst, "\\s+", " ").Trim();
+            string[] woorden = tekst.Split(' ');
 
-            var woorden = tekst.Split(' ');
-
-            var triplets = new HashSet<string>();
+            HashSet<string> triplets = new HashSet<string>();
             for (int i = 0; i < woorden.Length - 2; i++)
             {
                 string triplet = $"{woorden[i]} {woorden[i + 1]} {woorden[i + 2]}";
