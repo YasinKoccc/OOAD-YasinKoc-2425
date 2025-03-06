@@ -1,0 +1,38 @@
+﻿<!-- AboutWindow.xaml -->
+<Window x:Class="WpfVcardEditor.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="About" Height="350" Width="300" 
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterOwner">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Height="282">
+            <Image Source="Images/logo.jpg" 
+                   Width="200" Height="100" Margin="0,0,0,10"/>
+            <Grid Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Content="Gemaakt door:" FontWeight="Bold" 
+                       VerticalAlignment="Center" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="Yasin Can Koc" 
+                           VerticalAlignment="Center" Margin="5,0,0,0"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="Vak:" FontWeight="Bold" 
+                       VerticalAlignment="Center" Margin="0,0,47,0" />
+                <TextBlock Grid.Row="1" Text="OO Application Development" 
+                           VerticalAlignment="Center" Margin="52,0,0,0" Grid.ColumnSpan="2"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="Academiejaar:" FontWeight="Bold" 
+                       VerticalAlignment="Center" />
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="2024 - 2025" 
+                           VerticalAlignment="Center" Margin="5,0,0,0"/>
+            </Grid>
+            <Button Content="SLUITEN" Width="100" Click="BtnClose_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
