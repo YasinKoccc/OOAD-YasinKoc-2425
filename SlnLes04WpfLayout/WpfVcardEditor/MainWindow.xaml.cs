@@ -80,8 +80,7 @@ namespace WpfVcardEditor
                         {
                             string bdayStr = line.Substring(5).Trim();
                             DateTime bday;
-                            if (DateTime.TryParseExact(bdayStr, "yyyyMMdd", null,
-                                    System.Globalization.DateTimeStyles.None, out bday))
+                            if (DateTime.TryParse(bdayStr, out bday))
                             {
                                 datBirthday.SelectedDate = bday;
                             }
@@ -247,9 +246,22 @@ namespace WpfVcardEditor
 
             if (imgPhoto != null && imgPhoto.Source != null)
             {
-                string base64Photo = GetImageBase64(imgPhoto.Source);
-                if (!string.IsNullOrWhiteSpace(base64Photo))
-                    lines.Add("PHOTO:" + base64Photo);
+                BitmapImage bitmapImage = imgPhoto.Source as BitmapImage;
+                if (bitmapImage != null)
+                {
+                    try
+                    {
+                        byte[] imageBytes = File.ReadAllBytes(bitmapImage.UriSource.LocalPath);
+                        string base64Photo = Convert.ToBase64String(imageBytes);
+                        if (!string.IsNullOrWhiteSpace(base64Photo))
+                            lines.Add("PHOTO:" + base64Photo);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Fout bij het converteren van de foto naar base64:\n" + ex.Message,
+                            "Foto wegschrijven Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
             }
 
             lines.Add("END:VCARD");
@@ -379,11 +391,8 @@ namespace WpfVcardEditor
                 txtSelectedPhoto.Content = System.IO.Path.GetFileName(dlg.FileName);
                 try
                 {
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.UriSource = new Uri(dlg.FileName, UriKind.Absolute);
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.EndInit();
+                    Uri fileUri = new Uri(dlg.FileName, UriKind.Absolute);
+                    BitmapImage bitmap = new BitmapImage(fileUri);
                     imgPhoto.Source = bitmap;
                     isDirty = true;
                 }
@@ -393,29 +402,6 @@ namespace WpfVcardEditor
                         "Foto laden Fout", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-        }
-
-        private string GetImageBase64(System.Windows.Media.ImageSource imageSource)
-        {
-            if (imageSource is BitmapImage bitmapImage)
-            {
-                try
-                {
-                    JpegBitmapEncoder encoder = new JpegBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        encoder.Save(ms);
-                        return Convert.ToBase64String(ms.ToArray());
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Fout bij het converteren van de foto naar base64:\n" + ex.Message,
-                        "Foto wegschrijven Fout", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-            return string.Empty;
         }
     }
 }
