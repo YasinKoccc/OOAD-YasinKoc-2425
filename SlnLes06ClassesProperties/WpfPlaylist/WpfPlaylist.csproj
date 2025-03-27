@@ -1,0 +1,70 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="foto%27s\anouar-brahem.jpg" />
+    <None Remove="foto%27s\baaba-maal.jpg" />
+    <None Remove="foto%27s\mohammed-abdu.jpg" />
+    <None Remove="foto%27s\zakir-houssein.jpg" />
+    <None Remove="muziek\belvedere-assiege-1m.mp3" />
+    <None Remove="muziek\great-indian-desert-1m.mp3" />
+    <None Remove="muziek\habibi-1m.mp3" />
+    <None Remove="muziek\raf-raf-1m.mp3" />
+    <None Remove="muziek\ronda-1m.mp3" />
+    <None Remove="muziek\samba-1m.mp3" />
+    <None Remove="muziek\yero-mama-1m.mp3" />
+    <None Remove="WpfPlaylistData.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ExcelDataReader" Version="3.7.0" />
+    <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="foto's\anouar-brahem.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="foto's\baaba-maal.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="foto's\mohammed-abdu.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="foto's\zakir-houssein.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="muziek\belvedere-assiege-1m.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="muziek\great-indian-desert-1m.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="muziek\habibi-1m.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="muziek\raf-raf-1m.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="muziek\ronda-1m.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="muziek\samba-1m.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="muziek\yero-mama-1m.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WpfPlaylistData.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
