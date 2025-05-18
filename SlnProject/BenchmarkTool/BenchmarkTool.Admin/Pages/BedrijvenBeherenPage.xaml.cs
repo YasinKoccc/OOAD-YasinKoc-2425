@@ -30,6 +30,7 @@ namespace BenchmarkTool.Admin.Pages
                     Margin = new Thickness(0, 5, 0, 5)
                 };
 
+                // Logo
                 if (company.Logo != null)
                 {
                     BitmapImage img = new BitmapImage();
@@ -50,14 +51,16 @@ namespace BenchmarkTool.Admin.Pages
                     });
                 }
 
+                // Bedrijfsinfo
                 var tekst = new TextBlock
                 {
-                    Text = $"{company.Name}\n{company.Email}",
+                    Text = $"{company.Name}\n{company.Email}\nStatus: {company.Status}",
                     VerticalAlignment = VerticalAlignment.Center,
                     Width = 200
                 };
                 card.Children.Add(tekst);
 
+                // Wijzig knop
                 Button btnWijzigen = new Button
                 {
                     Content = "Wijzigen",
@@ -68,6 +71,7 @@ namespace BenchmarkTool.Admin.Pages
                 btnWijzigen.Click += BtnWijzigen_Click;
                 card.Children.Add(btnWijzigen);
 
+                // Verwijder knop
                 Button btnVerwijderen = new Button
                 {
                     Content = "Verwijderen",
@@ -80,9 +84,53 @@ namespace BenchmarkTool.Admin.Pages
                 btnVerwijderen.Click += BtnVerwijderen_Click;
                 card.Children.Add(btnVerwijderen);
 
+                // Goedkeuren / Afkeuren knoppen bij "pending"
+                if (company.Status == "pending")
+                {
+                    // ✅ Goedkeuren knop
+                    Button btnGoedkeuren = new Button
+                    {
+                        Content = "✅",
+                        FontSize = 16,
+                        Tag = company.Id,
+                        Margin = new Thickness(5, 0, 5, 0),
+                        Width = 40,
+                        Height = 30,
+                        ToolTip = "Goedkeuren",
+                        Background = Brushes.LightGreen
+                    };
+                    btnGoedkeuren.Click += BtnGoedkeuren_Click;
+
+                    // ❌ Afkeuren knop
+                    Button btnAfkeuren = new Button
+                    {
+                        Content = "❌",
+                        FontSize = 16,
+                        Tag = company.Id,
+                        Margin = new Thickness(5, 0, 5, 0),
+                        Width = 40,
+                        Height = 30,
+                        ToolTip = "Afkeuren",
+                        Background = Brushes.IndianRed,
+                        Foreground = Brushes.White
+                    };
+
+                    btnAfkeuren.Click += BtnAfkeuren_Click;
+
+                    // Voeg toe aan card
+                    card.Children.Add(btnGoedkeuren);
+                    card.Children.Add(btnAfkeuren);
+
+
+
+                }
+
+
+
                 BedrijvenPanel.Children.Add(card);
             }
         }
+
 
         private void BtnWijzigen_Click(object sender, RoutedEventArgs e)
         {
@@ -111,5 +159,20 @@ namespace BenchmarkTool.Admin.Pages
                 }
             }
         }
+
+        private void BtnGoedkeuren_Click(object sender, RoutedEventArgs e)
+        {
+            int id = (int)((Button)sender).Tag;
+            CompanyService.UpdateStatus(id, "active");
+            LaadCompanies();
+        }
+
+        private void BtnAfkeuren_Click(object sender, RoutedEventArgs e)
+        {
+            int id = (int)((Button)sender).Tag;
+            CompanyService.UpdateStatus(id, "rejected");
+            LaadCompanies();
+        }
+
     }
 }

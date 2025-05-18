@@ -41,8 +41,15 @@ namespace BenchmarkTool.Company.Pages
         public void LoadReports()
         {
             List<YearReport> reports = YearReportService.GetReportsByCompanyId(_company.Id);
-            lvReports.ItemsSource = reports;
+            lvReports.Items.Clear();
+
+            foreach (YearReport report in reports)
+            {
+                string display = $"Jaar: {report.Year} - FTE: {report.Fte}";
+                lvReports.Items.Add(display);
+            }
         }
+
 
         private void BtnToevoegen_Click(object sender, RoutedEventArgs e)
         {

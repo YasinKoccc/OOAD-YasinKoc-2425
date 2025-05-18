@@ -30,7 +30,12 @@ namespace BenchmarkTool.Admin.Pages
         private void LoadNacecodes()
         {
             List<string> codes = CompanyService.GetNacecodes();
-            cmbNacecode.ItemsSource = codes;
+            cmbNacecode.Items.Clear();
+            foreach (var code in codes)
+            {
+                cmbNacecode.Items.Add(code);
+            }
+
         }
 
         private void LoadCompanyData()
@@ -73,7 +78,17 @@ namespace BenchmarkTool.Admin.Pages
             {
                 CompanyService.UpdateCompany(_company);
                 _parentPage.LaadCompanies();
-                this.NavigationService.GoBack();
+                // Ga handmatig terug naar de vorige pagina zonder GoBack
+                Window parentWindow = Window.GetWindow(this);
+                if (parentWindow != null)
+                {
+                    var frame = parentWindow.FindName("MainFrame") as Frame;
+                    if (frame != null)
+                    {
+                        frame.Content = _parentPage; // dit is BedrijvenBeherenPage
+                    }
+                }
+
 
             }
             catch (Exception ex)
@@ -84,17 +99,29 @@ namespace BenchmarkTool.Admin.Pages
 
         private void KiesLogo_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new OpenFileDialog();
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             dialog.Filter = "Afbeeldingen|*.png;*.jpg;*.jpeg";
 
-            if (dialog.ShowDialog() == true)
+            bool? dialogResult = dialog.ShowDialog();
+            if (dialogResult == true)
             {
-                byte[] imageBytes = File.ReadAllBytes(dialog.FileName);
+                string chosenFileName = dialog.FileName;
+
+                byte[] imageBytes;
+
+                using (FileStream fs = new FileStream(chosenFileName, FileMode.Open, FileAccess.Read))
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    fs.CopyTo(ms);
+                    imageBytes = ms.ToArray();
+                }
+
                 _company.Logo = imageBytes;
 
                 // Preview tonen
                 BitmapImage img = new BitmapImage();
-                using (var ms = new MemoryStream(imageBytes))
+                using (MemoryStream ms = new MemoryStream(imageBytes))
                 {
                     img.BeginInit();
                     img.CacheOption = BitmapCacheOption.OnLoad;
@@ -105,10 +132,16 @@ namespace BenchmarkTool.Admin.Pages
             }
         }
 
+
         private void Annuleren_Click(object sender, RoutedEventArgs e)
         {
-            _parentPage.NavigationService.GoBack();
+            var mainWindow = Application.Current.MainWindow as BenchmarkTool.Admin.MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.MainFrame.Navigate(new BedrijvenBeherenPage());
+            }
         }
+
 
         private string HashPassword(string password)
         {

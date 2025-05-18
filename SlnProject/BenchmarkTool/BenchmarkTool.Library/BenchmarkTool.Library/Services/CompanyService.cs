@@ -193,6 +193,24 @@ namespace BenchmarkTool.Library.Services
                 }
             }
         }
+        public static void UpdateCompanyStatus(int companyId, string newStatus)
+        {
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            {
+                conn.Open();
+                string query = "UPDATE Companies SET status = @status WHERE id = @id";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@status", newStatus);
+                    cmd.Parameters.AddWithValue("@id", companyId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+
 
         public static Company Login(string email, string password)
         {
@@ -276,6 +294,22 @@ namespace BenchmarkTool.Library.Services
             }
             return codes;
         }
+
+        public static void UpdateStatus(int companyId, string newStatus)
+        {
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            {
+                conn.Open();
+                string query = "UPDATE Companies SET status = @status WHERE id = @id";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@status", newStatus);
+                    cmd.Parameters.AddWithValue("@id", companyId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
 
     }
 }
