@@ -3,6 +3,8 @@ using BenchmarkTool.Company.Pages;
 using System.IO;
 using System.Windows.Media.Imaging;
 using BenchmarkTool.Library.Models;
+using CompanyModel = BenchmarkTool.Library.Models.Company;
+
 
 
 namespace BenchmarkTool.Company

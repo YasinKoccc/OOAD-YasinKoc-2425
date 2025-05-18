@@ -24,12 +24,14 @@
         <ListView x:Name="lvBenchmark" Grid.Row="1">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Bedrijf" Width="150" DisplayMemberBinding="{Binding Company.Name}"/>
-                    <GridViewColumn Header="Sector" Width="120" DisplayMemberBinding="{Binding Company.Sector}"/>
-                    <GridViewColumn Header="Jaar" Width="80" DisplayMemberBinding="{Binding Report.Year}"/>
-                    <GridViewColumn Header="FTE" Width="80" DisplayMemberBinding="{Binding Report.Fte}"/>
+                    <GridViewColumn Header="Bedrijf" DisplayMemberBinding="{Binding Company.Name}" />
+                    <GridViewColumn Header="Sector" DisplayMemberBinding="{Binding Company.Sector}" />
+                    <GridViewColumn Header="Jaar" DisplayMemberBinding="{Binding Report.Year}" />
+                    <GridViewColumn Header="FTE" DisplayMemberBinding="{Binding Report.Fte}" />
                 </GridView>
             </ListView.View>
         </ListView>
+
+
     </Grid>
 </Page>

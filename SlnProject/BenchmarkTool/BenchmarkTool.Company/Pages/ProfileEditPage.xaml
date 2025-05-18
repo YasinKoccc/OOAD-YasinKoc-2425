@@ -5,23 +5,63 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BenchmarkTool.Company.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="600" d:DesignWidth="800"
       Title="ProfileEditPage">
 
-    <Grid Margin="20">
-        <StackPanel Width="300" HorizontalAlignment="Center">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Width="350" HorizontalAlignment="Center" Margin="30">
             <TextBlock Text="Profiel wijzigen" FontSize="24" FontWeight="Bold" Margin="0 0 0 20"/>
 
             <TextBlock Text="Naam:"/>
-            <TextBox x:Name="txtName" Margin="0 0 0 10"/>
+            <TextBox x:Name="txtNaam" Margin="0 0 0 10"/>
 
-            <TextBlock Text="Contact:"/>
+            <TextBlock Text="Contactpersoon:"/>
             <TextBox x:Name="txtContact" Margin="0 0 0 10"/>
 
-            <TextBlock Text="Email:"/>
+            <TextBlock Text="E-mailadres:"/>
             <TextBox x:Name="txtEmail" Margin="0 0 0 10"/>
 
-            <Button Content="Opslaan" Click="Save_Click" Width="100" HorizontalAlignment="Center" Margin="0 20 0 0"/>
+            <TextBlock Text="Login:"/>
+            <TextBox x:Name="txtLogin" Margin="0 0 0 10"/>
+
+            <TextBlock Text="Oud wachtwoord:"/>
+            <PasswordBox x:Name="pwdOud" Margin="0 0 0 10"/>
+
+            <TextBlock Text="Nieuw wachtwoord:"/>
+            <PasswordBox x:Name="pwdNieuw" Margin="0 0 0 10"/>
+
+            <!-- ✅ Extra verplichte velden -->
+            <TextBlock Text="Adres:"/>
+            <TextBox x:Name="txtAdres" Margin="0 0 0 10"/>
+
+            <TextBlock Text="Postcode:"/>
+            <TextBox x:Name="txtPostcode" Margin="0 0 0 10"/>
+
+            <TextBlock Text="Stad:"/>
+            <TextBox x:Name="txtStad" Margin="0 0 0 10"/>
+
+            <TextBlock Text="Land:"/>
+            <TextBox x:Name="txtLand" Margin="0 0 0 10"/>
+
+            <TextBlock Text="Telefoon:"/>
+            <TextBox x:Name="txtTelefoon" Margin="0 0 0 10"/>
+
+            <TextBlock Text="BTW:"/>
+            <TextBox x:Name="txtBtw" Margin="0 0 0 10"/>
+
+            <TextBlock Text="Taal:"/>
+            <TextBox x:Name="txtTaal" Margin="0 0 0 10"/>
+
+            <!-- ✅ ComboBox voor Nacecode -->
+            <TextBlock Text="Nacecode:"/>
+            <ComboBox x:Name="cmbNacecode" Margin="0 0 0 10"/>
+
+            <TextBlock Text="Sector:"/>
+            <TextBox x:Name="txtSector" Margin="0 0 0 10" IsReadOnly="True" Background="LightGray"/>
+
+            <Button Content="Opslaan" Click="Opslaan_Click" Width="100" HorizontalAlignment="Center" Margin="0 20 0 0"/>
+            <TextBlock x:Name="txtStatus" Foreground="Red" TextWrapping="Wrap" Margin="0 10 0 0"/>
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
+
 </Page>

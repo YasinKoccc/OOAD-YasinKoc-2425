@@ -141,15 +141,28 @@ namespace BenchmarkTool.Library.Services
 
         public static void UpdateCompany(Company company)
         {
+            // Zorg dat verplichte velden niet null zijn
+            if (company.Address == null) company.Address = "";
+            if (company.Zip == null) company.Zip = "";
+            if (company.City == null) company.City = "";
+            if (company.Country == null) company.Country = "";
+            if (company.Phone == null) company.Phone = "";
+            if (company.Btw == null) company.Btw = "";
+            if (company.Language == null) company.Language = "NL";
+            if (company.Status == null) company.Status = "Actief";
+            if (company.Nacecode_Code == null) company.Nacecode_Code = "99999";
+            company.RegDate = company.RegDate < new DateTime(1753, 1, 1) ? DateTime.Now : company.RegDate;
+            company.LastModified = DateTime.Now;
+
             using (SqlConnection conn = DatabaseHelper.GetConnection())
             {
                 conn.Open();
                 string query = @"UPDATE Companies SET 
-                                    name = @name, contact = @contact, address = @address, zip = @zip, city = @city, country = @country,
-                                    phone = @phone, email = @email, btw = @btw, login = @login, password = @password, regdate = @regdate, 
-                                    acceptdate = @acceptdate, lastmodified = @lastmodified, status = @status, language = @language, 
-                                    logo = @logo, nacecode_code = @nacecode_code
-                                 WHERE id = @id";
+                            name = @name, contact = @contact, address = @address, zip = @zip, city = @city, country = @country,
+                            phone = @phone, email = @email, btw = @btw, login = @login, password = @password, regdate = @regdate, 
+                            acceptdate = @acceptdate, lastmodified = @lastmodified, status = @status, language = @language, 
+                            logo = @logo, nacecode_code = @nacecode_code
+                         WHERE id = @id";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
@@ -166,8 +179,11 @@ namespace BenchmarkTool.Library.Services
                     cmd.Parameters.AddWithValue("@login", company.Login);
                     cmd.Parameters.AddWithValue("@password", company.Password);
                     cmd.Parameters.AddWithValue("@regdate", company.RegDate);
-                    cmd.Parameters.AddWithValue("@acceptdate", company.AcceptDate ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("@lastmodified", company.LastModified ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@acceptdate",
+                        company.AcceptDate.HasValue && company.AcceptDate.Value >= new DateTime(1753, 1, 1)
+                        ? (object)company.AcceptDate.Value
+                        : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@lastmodified", company.LastModified);
                     cmd.Parameters.AddWithValue("@status", company.Status);
                     cmd.Parameters.AddWithValue("@language", company.Language);
                     cmd.Parameters.AddWithValue("@logo", (object)company.Logo ?? DBNull.Value);
@@ -177,11 +193,10 @@ namespace BenchmarkTool.Library.Services
                 }
             }
         }
+
         public static Company Login(string email, string password)
         {
             string hashed = HashPassword(password);
-            Console.WriteLine($"Login poging: email={email}, hash={hashed}");
-
 
             using (SqlConnection conn = DatabaseHelper.GetConnection())
             {
@@ -202,6 +217,7 @@ namespace BenchmarkTool.Library.Services
                                 Id = (int)reader["id"],
                                 Name = reader["name"] as string,
                                 Email = reader["email"] as string,
+                                Password = reader["password"] as string, // ✅ voeg dit toe
                                 Logo = reader["logo"] as byte[]
                             };
                         }
@@ -211,6 +227,7 @@ namespace BenchmarkTool.Library.Services
 
             return null;
         }
+
 
         private static string HashPassword(string password)
         {
@@ -259,5 +276,6 @@ namespace BenchmarkTool.Library.Services
             }
             return codes;
         }
+
     }
 }

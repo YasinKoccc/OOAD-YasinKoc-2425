@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BenchmarkTool.Library.Services;
+using CompanyModel = BenchmarkTool.Library.Models.Company;
+
+
 
 namespace BenchmarkTool.Company.Pages
 {
@@ -21,32 +25,101 @@ namespace BenchmarkTool.Company.Pages
     /// </summary>
     public partial class ProfileEditPage : Page
     {
-        private BenchmarkTool.Library.Models.Company _company;
+        private CompanyModel _bedrijf;
 
-        public ProfileEditPage(BenchmarkTool.Library.Models.Company company)
+        public ProfileEditPage(CompanyModel bedrijf)
         {
             InitializeComponent();
-            _company = company;
-
-            txtName.Text = _company.Name;
-            txtContact.Text = _company.Contact;
-            txtEmail.Text = _company.Email;
+            _bedrijf = bedrijf;
+            LaadGegevens();
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
+
+        private void LaadGegevens()
         {
-            _company.Name = txtName.Text.Trim();
-            _company.Contact = txtContact.Text.Trim();
-            _company.Email = txtEmail.Text.Trim();
+            var nacecodes = CompanyService.GetNacecodes();
+            cmbNacecode.ItemsSource = nacecodes;
+            cmbNacecode.SelectedItem = _bedrijf.Nacecode_Code;
+
+            txtNaam.Text = _bedrijf.Name;
+            txtContact.Text = _bedrijf.Contact;
+            txtEmail.Text = _bedrijf.Email;
+            txtLogin.Text = _bedrijf.Login;
+            txtSector.Text = _bedrijf.Sector;
+
+        }
+
+        private void Opslaan_Click(object sender, RoutedEventArgs e)
+        {
+            txtStatus.Text = "";
+
+            if (string.IsNullOrWhiteSpace(txtNaam.Text) ||
+                string.IsNullOrWhiteSpace(txtContact.Text) ||
+                string.IsNullOrWhiteSpace(txtEmail.Text) ||
+                string.IsNullOrWhiteSpace(txtLogin.Text))
+            {
+                txtStatus.Text = "Vul alle verplichte velden in.";
+                return;
+            }
+
+            // Als een nieuw wachtwoord is ingevuld, controleer het oude wachtwoord
+            if (!string.IsNullOrWhiteSpace(pwdNieuw.Password))
+            {
+                if (string.IsNullOrWhiteSpace(pwdOud.Password))
+                {
+                    txtStatus.Text = "Geef het huidige wachtwoord in.";
+                    return;
+                }
+
+                string ingegevenHash = Hash(pwdOud.Password);
+
+                if (_bedrijf.Password != ingegevenHash)
+                {
+                    txtStatus.Text = "Huidig wachtwoord is onjuist.";
+                    return;
+                }
+
+                _bedrijf.Password = Hash(pwdNieuw.Password); // Nieuw wachtwoord opslaan
+            }
+
+            // Update overige gegevens
+            _bedrijf.Name = txtNaam.Text.Trim();
+            _bedrijf.Contact = txtContact.Text.Trim();
+            _bedrijf.Email = txtEmail.Text.Trim();
+            _bedrijf.Login = txtLogin.Text.Trim();
+            _bedrijf.LastModified = DateTime.Now;
 
             try
             {
-                CompanyService.UpdateCompany(_company);
-                MessageBox.Show("Profiel succesvol bijgewerkt.");
+                _bedrijf.Address = _bedrijf.Address ?? "";
+                _bedrijf.Zip = _bedrijf.Zip ?? "";
+                _bedrijf.City = _bedrijf.City ?? "";
+                _bedrijf.Country = _bedrijf.Country ?? "";
+                _bedrijf.Phone = _bedrijf.Phone ?? "";
+                _bedrijf.Btw = _bedrijf.Btw ?? "";
+                _bedrijf.Status = _bedrijf.Status ?? "Actief"; // of iets anders
+                _bedrijf.Language = _bedrijf.Language ?? "NL"; // of "EN", "FR"
+                _bedrijf.Nacecode_Code = _bedrijf.Nacecode_Code ?? "99999";
+                CompanyService.UpdateCompany(_bedrijf);
+                txtStatus.Foreground = System.Windows.Media.Brushes.Green;
+                txtStatus.Text = "Profiel succesvol bijgewerkt.";
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("Fout bij opslaan: " + ex.Message);
+                txtStatus.Foreground = System.Windows.Media.Brushes.Red;
+                txtStatus.Text = "Fout bij opslaan: " + ex.Message;
+            }
+        }
+
+        private string Hash(string input)
+        {
+            using (SHA256 sha = SHA256.Create())
+            {
+                byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in bytes)
+                    sb.Append(b.ToString("x2"));
+                return sb.ToString();
             }
         }
     }

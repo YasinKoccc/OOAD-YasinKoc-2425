@@ -48,9 +48,10 @@ namespace BenchmarkTool.Company.Pages
             if (cmbYear.SelectedItem is int y && y != 0)
                 yearFilter = y;
 
-            _allData = GetFilteredYearReports(sectorFilter, yearFilter);
-            lvBenchmark.ItemsSource = _allData;
+            var data = YearReportService.GetFilteredYearReports(sectorFilter, yearFilter);
+            lvBenchmark.ItemsSource = data;
         }
+
 
         private void Filters_Changed(object sender, SelectionChangedEventArgs e)
         {
@@ -65,21 +66,6 @@ namespace BenchmarkTool.Company.Pages
                 .Distinct()
                 .OrderBy(y => y)
                 .ToList();
-        }
-
-        // Helper method to get filtered year reports
-        private List<(YearReport Report, BenchmarkTool.Library.Models.Company Company)> GetFilteredYearReports(string sector, int? year)
-        {
-            var companies = CompanyService.GetAllCompanies();
-            var reports = YearReportService.GetAllYearReports();
-
-            var query = from report in reports
-                        join company in companies on report.CompanyId equals company.Id
-                        where (sector == null || company.Sector == sector)
-                              && (!year.HasValue || report.Year == year.Value)
-                        select (Report: report, Company: company);
-
-            return query.ToList();
         }
     }
 

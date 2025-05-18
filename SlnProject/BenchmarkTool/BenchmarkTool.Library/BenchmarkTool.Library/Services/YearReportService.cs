@@ -84,7 +84,8 @@ namespace BenchmarkTool.Library.Services
             using (SqlConnection conn = DatabaseHelper.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT id, year, fte, company_id FROM Yearreports ORDER BY year DESC";
+                string query = "SELECT id, year, fte, company_id FROM Yearreports";
+
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -100,8 +101,28 @@ namespace BenchmarkTool.Library.Services
                     }
                 }
             }
+
             return list;
         }
+
+        public static List<BenchmarkRow> GetFilteredYearReports(string sector, int? year)
+        {
+            var companies = CompanyService.GetAllCompanies();
+            var reports = GetAllYearReports();
+
+            var query = from report in reports
+                        join company in companies on report.CompanyId equals company.Id
+                        where (sector == null || company.Sector == sector)
+                           && (!year.HasValue || report.Year == year.Value)
+                        select new BenchmarkRow
+                        {
+                            Company = company,
+                            Report = report
+                        };
+
+            return query.ToList();
+        }
+
 
 
         public static void DeleteYearReport(int id)

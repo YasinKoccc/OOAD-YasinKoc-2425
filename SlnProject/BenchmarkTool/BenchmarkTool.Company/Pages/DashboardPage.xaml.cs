@@ -4,6 +4,8 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using BenchmarkTool.Company.Windows;
 using BenchmarkTool.Company.Pages;
+using CompanyModel = BenchmarkTool.Library.Models.Company;
+
 
 
 namespace BenchmarkTool.Company.Pages
@@ -13,21 +15,22 @@ namespace BenchmarkTool.Company.Pages
     /// </summary>
     public partial class DashboardPage : Page
     {
-        private BenchmarkTool.Library.Models.Company _company;
+        private CompanyModel _bedrijf;
 
-        public DashboardPage(BenchmarkTool.Library.Models.Company company)
+        public DashboardPage(CompanyModel company)
         {
             InitializeComponent();
-            _company = company;
+            _bedrijf = company;
 
-            txtBedrijfsnaam.Text = _company.Name;
-            txtEmail.Text = _company.Email;
-            txtStatus.Text = _company.Status;
 
-            if (_company.Logo != null && _company.Logo.Length > 0)
+            txtBedrijfsnaam.Text = _bedrijf.Name;
+            txtEmail.Text = _bedrijf.Email;
+            txtStatus.Text = _bedrijf.Status;
+
+            if (_bedrijf.Logo != null && _bedrijf.Logo.Length > 0)
             {
                 BitmapImage bitmap = new BitmapImage();
-                using (MemoryStream ms = new MemoryStream(_company.Logo))
+                using (MemoryStream ms = new MemoryStream(_bedrijf.Logo))
                 {
                     bitmap.BeginInit();
                     bitmap.CacheOption = BitmapCacheOption.OnLoad;
@@ -40,13 +43,12 @@ namespace BenchmarkTool.Company.Pages
 
         private void BtnJaarrapporten_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new YearReportsPage(_company));
+            NavigationService?.Navigate(new YearReportsPage(_bedrijf));
         }
 
         private void BtnProfielWijzigen_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Hier komt de pagina om profiel te wijzigen.");
-            // TODO: Navigeren naar profiel wijzigen pagina
+            NavigationService?.Navigate(new ProfileEditPage(_bedrijf));
         }
 
         private void BtnUitloggen_Click(object sender, RoutedEventArgs e)

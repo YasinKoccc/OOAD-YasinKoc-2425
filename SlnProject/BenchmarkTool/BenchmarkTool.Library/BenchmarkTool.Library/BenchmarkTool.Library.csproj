@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Models\BenchmarkRow.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\YearReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
