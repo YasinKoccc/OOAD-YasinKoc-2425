@@ -21,16 +21,11 @@
             <ComboBox x:Name="cmbYear" Width="100" SelectionChanged="Filters_Changed"/>
         </StackPanel>
 
-        <ListView x:Name="lvBenchmark" Grid.Row="1">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Bedrijf" DisplayMemberBinding="{Binding Company.Name}" />
-                    <GridViewColumn Header="Sector" DisplayMemberBinding="{Binding Company.Sector}" />
-                    <GridViewColumn Header="Jaar" DisplayMemberBinding="{Binding Report.Year}" />
-                    <GridViewColumn Header="FTE" DisplayMemberBinding="{Binding Report.Fte}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel x:Name="BenchmarkPanel" />
+        </ScrollViewer>
+
+
 
 
     </Grid>

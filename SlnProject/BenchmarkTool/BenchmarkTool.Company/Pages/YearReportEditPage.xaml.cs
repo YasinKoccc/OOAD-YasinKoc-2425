@@ -67,8 +67,14 @@ namespace BenchmarkTool.Company.Pages
 
                 MessageBox.Show("Jaarrapport succesvol opgeslagen.");
 
-                // Ga terug naar jaarrapporten pagina
-                NavigationService.GoBack();
+                // Navigeer handmatig terug naar de vorige pagina
+                var parentWindow = Window.GetWindow(this) as MainWindow;
+                if (parentWindow != null)
+                {
+                    parentWindow.MainFrame.Navigate(new YearReportsPage(new BenchmarkTool.Library.Models.Company { Id = _companyId }));
+
+                }
+
             }
             catch (Exception ex)
             {

@@ -17,18 +17,12 @@
         <TextBlock Text="Jaarrapporten" FontSize="24" FontWeight="Bold" Margin="0 0 0 20"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 0 10" Grid.Row="0">
             <Button Content="Toevoegen" Click="BtnToevoegen_Click" Width="100" Margin="0 0 10 0"/>
-            <Button Content="Bewerken" Click="BtnBewerken_Click" Width="100" Margin="0 0 10 0"/>
-            <Button Content="Verwijderen" Click="BtnVerwijderen_Click" Width="100"/>
         </StackPanel>
 
 
-        <ListView x:Name="lvReports" Grid.Row="1">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Jaar" DisplayMemberBinding="{Binding Year}" Width="80"/>
-                    <GridViewColumn Header="FTE" DisplayMemberBinding="{Binding Fte}" Width="120"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel x:Name="ReportsPanel" />
+        </ScrollViewer>
+
     </Grid>
 </Page>

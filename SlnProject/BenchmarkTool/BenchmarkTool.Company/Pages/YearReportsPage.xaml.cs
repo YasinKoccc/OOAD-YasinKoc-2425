@@ -41,14 +41,68 @@ namespace BenchmarkTool.Company.Pages
         public void LoadReports()
         {
             List<YearReport> reports = YearReportService.GetReportsByCompanyId(_company.Id);
-            lvReports.Items.Clear();
+            ReportsPanel.Children.Clear();
 
             foreach (YearReport report in reports)
             {
-                string display = $"Jaar: {report.Year} - FTE: {report.Fte}";
-                lvReports.Items.Add(display);
+                // Info-tekst
+                var infoText = new TextBlock
+                {
+                    Text = $"Jaar: {report.Year} - FTE: {report.Fte}",
+                    FontSize = 14,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                // Bewerken knop
+                Button btnEdit = new Button
+                {
+                    Content = "Bewerk",
+                    Tag = report,
+                    Margin = new Thickness(10, 0, 5, 0),
+                    Width = 80
+                };
+                btnEdit.Click += BtnBewerkRapport_Click;
+
+                // Verwijderen knop
+                Button btnDelete = new Button
+                {
+                    Content = "Verwijder",
+                    Tag = report,
+                    Margin = new Thickness(5, 0, 0, 0),
+                    Width = 80,
+                    Background = Brushes.Red,
+                    Foreground = Brushes.White
+                };
+                btnDelete.Click += BtnVerwijderRapport_Click;
+
+                // Horizontale rij maken
+                StackPanel row = new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                    Margin = new Thickness(0, 5, 0, 0)
+                };
+                row.Children.Add(infoText);
+                row.Children.Add(btnEdit);
+                row.Children.Add(btnDelete);
+
+                // Border rond rij
+                var border = new Border
+                {
+                    Background = Brushes.LightGray,
+                    BorderBrush = Brushes.DarkGray,
+                    BorderThickness = new Thickness(1.5),
+                    CornerRadius = new CornerRadius(8),
+                    Margin = new Thickness(10, 5, 10, 5),
+                    Padding = new Thickness(12),
+                    Child = row
+                };
+
+
+                ReportsPanel.Children.Add(border); // ✅ Correct naamgebruik
             }
         }
+
+
 
 
         private void BtnToevoegen_Click(object sender, RoutedEventArgs e)
@@ -56,28 +110,24 @@ namespace BenchmarkTool.Company.Pages
             NavigationService?.Navigate(new YearReportEditPage(_company.Id));
         }
 
-        private void BtnBewerken_Click(object sender, RoutedEventArgs e)
+        private void BtnBewerkRapport_Click(object sender, RoutedEventArgs e)
         {
-            if (lvReports.SelectedItem is YearReport selectedReport)
+            if (sender is Button btn && btn.Tag is YearReport report)
             {
-                NavigationService?.Navigate(new YearReportEditPage(_company.Id, selectedReport));
-            }
-            else
-            {
-                MessageBox.Show("Selecteer een rapport om te bewerken.");
+                NavigationService?.Navigate(new YearReportEditPage(_company.Id, report));
             }
         }
 
-        private void BtnVerwijderen_Click(object sender, RoutedEventArgs e)
+        private void BtnVerwijderRapport_Click(object sender, RoutedEventArgs e)
         {
-            if (lvReports.SelectedItem is YearReport selectedReport)
+            if (sender is Button btn && btn.Tag is YearReport report)
             {
                 var result = MessageBox.Show("Weet je zeker dat je dit rapport wilt verwijderen?", "Bevestigen", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
                     try
                     {
-                        YearReportService.DeleteYearReport(selectedReport.Id);
+                        YearReportService.DeleteYearReport(report.Id);
                         LoadReports();
                     }
                     catch (Exception ex)
@@ -86,11 +136,8 @@ namespace BenchmarkTool.Company.Pages
                     }
                 }
             }
-            else
-            {
-                MessageBox.Show("Selecteer een rapport om te verwijderen.");
-            }
         }
+
 
     }
 }

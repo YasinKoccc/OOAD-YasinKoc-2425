@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using BenchmarkTool.Library.Models;
 using BenchmarkTool.Library.Services;
@@ -49,7 +50,17 @@ namespace BenchmarkTool.Company.Pages
                 yearFilter = y;
 
             var data = YearReportService.GetFilteredYearReports(sectorFilter, yearFilter);
-            lvBenchmark.ItemsSource = data;
+            BenchmarkPanel.Children.Clear();
+            foreach (var row in data)
+            {
+                var textBlock = new TextBlock
+                {
+                    Text = $"Bedrijf: {row.Company.Name} | Sector: {row.Company.Sector} | Jaar: {row.Report.Year} | FTE: {row.Report.Fte}",
+                    Margin = new Thickness(0, 5, 0, 5)
+                };
+                BenchmarkPanel.Children.Add(textBlock);
+            }
+
         }
 
 
