@@ -24,6 +24,7 @@ namespace BenchmarkTool.Company.Pages
     {
         private YearReport _yearReport;
         private int _companyId;
+        private BenchmarkTool.Library.Models.Company _company;
 
         public YearReportEditPage(int companyId, YearReport yearReport = null)
         {
@@ -81,5 +82,11 @@ namespace BenchmarkTool.Company.Pages
                 MessageBox.Show("Fout bij opslaan: " + ex.Message);
             }
         }
+        private void BtnTerug_Click(object sender, RoutedEventArgs e)
+        {
+            // Ga terug naar het overzicht van jaarrapporten
+            NavigationService?.Navigate(new YearReportEditPage(_company.Id));
+        }
+
     }
 }

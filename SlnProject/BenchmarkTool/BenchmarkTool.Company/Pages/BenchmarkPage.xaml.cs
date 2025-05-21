@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using BenchmarkTool.Library.Models;
 using BenchmarkTool.Library.Services;
 
@@ -13,6 +14,7 @@ namespace BenchmarkTool.Company.Pages
     public partial class BenchmarkPage : Page
     {
         private List<(YearReport Report, BenchmarkTool.Library.Models.Company Company)> _allData;
+        private BenchmarkTool.Library.Models.Company _company;
 
         public BenchmarkPage()
         {
@@ -51,17 +53,29 @@ namespace BenchmarkTool.Company.Pages
 
             var data = YearReportService.GetFilteredYearReports(sectorFilter, yearFilter);
             BenchmarkPanel.Children.Clear();
+
             foreach (var row in data)
             {
-                var textBlock = new TextBlock
+                var border = new Border
                 {
-                    Text = $"Bedrijf: {row.Company.Name} | Sector: {row.Company.Sector} | Jaar: {row.Report.Year} | FTE: {row.Report.Fte}",
-                    Margin = new Thickness(0, 5, 0, 5)
+                    Background = Brushes.WhiteSmoke,
+                    BorderBrush = Brushes.Gray,
+                    BorderThickness = new Thickness(1),
+                    CornerRadius = new CornerRadius(5),
+                    Margin = new Thickness(0, 5, 0, 5),
+                    Padding = new Thickness(10)
                 };
-                BenchmarkPanel.Children.Add(textBlock);
-            }
 
+                border.Child = new TextBlock
+                {
+                    Text = $"🧾 Bedrijf: {row.Company.Name}\n📂 Sector: {row.Company.Sector ?? "Onbekend"}\n📅 Jaar: {row.Report.Year} | 👥 FTE: {row.Report.Fte}",
+                    FontSize = 14
+                };
+
+                BenchmarkPanel.Children.Add(border);
+            }
         }
+
 
 
         private void Filters_Changed(object sender, SelectionChangedEventArgs e)
@@ -77,6 +91,14 @@ namespace BenchmarkTool.Company.Pages
                 .Distinct()
                 .OrderBy(y => y)
                 .ToList();
+        }
+
+        public BenchmarkPage(BenchmarkTool.Library.Models.Company company)
+        {
+            InitializeComponent();
+            _company = company;
+            LoadFilters();
+            LoadData();
         }
     }
 

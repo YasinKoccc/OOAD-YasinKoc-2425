@@ -16,8 +16,10 @@
 
         <TextBlock Text="Jaarrapporten" FontSize="24" FontWeight="Bold" Margin="0 0 0 20"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 0 10" Grid.Row="0">
-            <Button Content="Toevoegen" Click="BtnToevoegen_Click" Width="100" Margin="0 0 10 0"/>
+            <Button Content="Terug" Click="BtnTerug_Click" Width="100" Margin="0 0 10 0"/>
+            <Button Content="Toevoegen" Click="BtnToevoegen_Click" Width="100"/>
         </StackPanel>
+
 
 
         <ScrollViewer Grid.Row="1">

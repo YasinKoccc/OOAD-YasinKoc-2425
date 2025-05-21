@@ -103,34 +103,14 @@ namespace BenchmarkTool.Admin.Pages
             dialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             dialog.Filter = "Afbeeldingen|*.png;*.jpg;*.jpeg";
 
-            bool? dialogResult = dialog.ShowDialog();
-            if (dialogResult == true)
+            if (dialog.ShowDialog() == true)
             {
                 string chosenFileName = dialog.FileName;
 
-                byte[] imageBytes;
-
-                using (FileStream fs = new FileStream(chosenFileName, FileMode.Open, FileAccess.Read))
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    fs.CopyTo(ms);
-                    imageBytes = ms.ToArray();
-                }
-
-                _company.Logo = imageBytes;
-
-                // Preview tonen
-                BitmapImage img = new BitmapImage();
-                using (MemoryStream ms = new MemoryStream(imageBytes))
-                {
-                    img.BeginInit();
-                    img.CacheOption = BitmapCacheOption.OnLoad;
-                    img.StreamSource = ms;
-                    img.EndInit();
-                }
-                imgLogoPreview.Source = img;
+                imgLogoPreview.Source = new BitmapImage(new Uri(chosenFileName));
             }
         }
+
 
 
         private void Annuleren_Click(object sender, RoutedEventArgs e)

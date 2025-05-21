@@ -110,6 +110,11 @@ namespace BenchmarkTool.Company.Pages
                 txtStatus.Text = "Fout bij opslaan: " + ex.Message;
             }
         }
+        private void Terug_Click(object sender, RoutedEventArgs e)
+        {
+            // Navigeer terug naar DashboardPage en geef het bedrijf mee
+            this.NavigationService?.Navigate(new DashboardPage(_bedrijf));
+        }
 
         private string Hash(string input)
         {

@@ -109,6 +109,12 @@ namespace BenchmarkTool.Company.Pages
         {
             NavigationService?.Navigate(new YearReportEditPage(_company.Id));
         }
+        private void BtnTerug_Click(object sender, RoutedEventArgs e)
+        {
+            // Navigeer terug naar het dashboard
+            this.NavigationService?.Navigate(new DashboardPage(_company));
+        }
+
 
         private void BtnBewerkRapport_Click(object sender, RoutedEventArgs e)
         {
