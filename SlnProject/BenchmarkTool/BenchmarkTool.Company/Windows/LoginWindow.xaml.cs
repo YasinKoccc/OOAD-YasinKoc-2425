@@ -4,9 +4,6 @@ using BenchmarkTool.Library.Services;
 
 namespace BenchmarkTool.Company.Windows
 {
-    /// <summary>
-    /// Interaction logic for LoginWindow.xaml
-    /// </summary>
     public partial class LoginWindow : Window
     {
         public LoginWindow()
@@ -16,28 +13,37 @@ namespace BenchmarkTool.Company.Windows
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            string email = txtEmail.Text.Trim();
-            string password = pwdPassword.Password;
+            // Trim both email and password to avoid hidden whitespace issues
+            string email = txtEmail.Text.Trim().ToLower(); // Enforce lowercase for case-insensitive matching
+            string password = pwdPassword.Password.Trim(); // Trim password input
 
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                txtStatus.Text = "Vul e-mail en/of wachtwoord in.";
+                txtStatus.Text = "Vul e-mail en wachtwoord in.";
                 return;
             }
 
-            BenchmarkTool.Library.Models.Company bedrijf = CompanyService.Login(email, password);
+            // Debug output (remove in production)
+#if DEBUG
+            string hash = CompanyService.HashPassword(password);
+            MessageBox.Show(
+                $"Email: '{email}'\nHash: '{hash}'", // Never show raw password
+                "Login Debug"
+            );
+#endif
 
+            // Attempt login
+            BenchmarkTool.Library.Models.Company bedrijf = CompanyService.Login(email, password);
 
             if (bedrijf != null)
             {
-                // Login gelukt
-                MainWindow mainWindow = new MainWindow(bedrijf);
-                mainWindow.Show();
+                new MainWindow(bedrijf).Show();
                 this.Close();
             }
             else
             {
-                txtStatus.Text = "Onjuiste gebruikersnaam en/of wachtwoord.";
+                txtStatus.Text = "Ongeldige combinatie van e-mail en wachtwoord.";
+                pwdPassword.Clear(); // Clear password field on failure
             }
         }
     }

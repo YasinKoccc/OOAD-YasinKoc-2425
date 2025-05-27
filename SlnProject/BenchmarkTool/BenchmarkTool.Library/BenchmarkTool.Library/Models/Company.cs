@@ -30,5 +30,7 @@ namespace BenchmarkTool.Library.Models
 
         // Toevoegen:
         public string Sector { get; set; }
+        public byte[] LogoData { get; set; }
+
     }
 }

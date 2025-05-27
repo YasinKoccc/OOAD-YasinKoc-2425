@@ -27,19 +27,26 @@ namespace BenchmarkTool.Company.Pages
             txtEmail.Text = _bedrijf.Email;
             txtStatus.Text = _bedrijf.Status;
 
-            if (_bedrijf.Logo != null && _bedrijf.Logo.Length > 0)
+            imgLogo.Source = ByteArrayToBitmapImage(_bedrijf.Logo);
+
+        }
+        private BitmapImage ByteArrayToBitmapImage(byte[] imageData)
+        {
+            if (imageData == null || imageData.Length == 0)
+                return null;
+
+            using (var ms = new MemoryStream(imageData))
             {
-                BitmapImage bitmap = new BitmapImage();
-                using (MemoryStream ms = new MemoryStream(_bedrijf.Logo))
-                {
-                    bitmap.BeginInit();
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.StreamSource = ms;
-                    bitmap.EndInit();
-                }
-                imgLogo.Source = bitmap;
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.StreamSource = ms;
+                image.EndInit();
+                image.Freeze();
+                return image;
             }
         }
+
 
         private void BtnJaarrapporten_Click(object sender, RoutedEventArgs e)
         {

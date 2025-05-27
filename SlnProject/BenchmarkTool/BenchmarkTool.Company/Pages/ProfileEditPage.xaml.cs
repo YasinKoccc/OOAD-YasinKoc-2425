@@ -1,22 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using BenchmarkTool.Library.Services;
 using CompanyModel = BenchmarkTool.Library.Models.Company;
-
-
 
 namespace BenchmarkTool.Company.Pages
 {
@@ -34,7 +22,6 @@ namespace BenchmarkTool.Company.Pages
             LaadGegevens();
         }
 
-
         private void LaadGegevens()
         {
             var nacecodes = CompanyService.GetNacecodes();
@@ -46,7 +33,6 @@ namespace BenchmarkTool.Company.Pages
             txtEmail.Text = _bedrijf.Email;
             txtLogin.Text = _bedrijf.Login;
             txtSector.Text = _bedrijf.Sector;
-
         }
 
         private void Opslaan_Click(object sender, RoutedEventArgs e)
@@ -71,7 +57,7 @@ namespace BenchmarkTool.Company.Pages
                     return;
                 }
 
-                string ingegevenHash = Hash(pwdOud.Password);
+                string ingegevenHash = CompanyService.HashPassword(pwdOud.Password);
 
                 if (_bedrijf.Password != ingegevenHash)
                 {
@@ -79,7 +65,7 @@ namespace BenchmarkTool.Company.Pages
                     return;
                 }
 
-                _bedrijf.Password = Hash(pwdNieuw.Password); // Nieuw wachtwoord opslaan
+                _bedrijf.Password = CompanyService.HashPassword(pwdNieuw.Password); // Nieuw wachtwoord opslaan
             }
 
             // Update overige gegevens
@@ -110,22 +96,11 @@ namespace BenchmarkTool.Company.Pages
                 txtStatus.Text = "Fout bij opslaan: " + ex.Message;
             }
         }
+
         private void Terug_Click(object sender, RoutedEventArgs e)
         {
             // Navigeer terug naar DashboardPage en geef het bedrijf mee
             this.NavigationService?.Navigate(new DashboardPage(_bedrijf));
-        }
-
-        private string Hash(string input)
-        {
-            using (SHA256 sha = SHA256.Create())
-            {
-                byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
-                StringBuilder sb = new StringBuilder();
-                foreach (byte b in bytes)
-                    sb.Append(b.ToString("x2"));
-                return sb.ToString();
-            }
         }
     }
 }

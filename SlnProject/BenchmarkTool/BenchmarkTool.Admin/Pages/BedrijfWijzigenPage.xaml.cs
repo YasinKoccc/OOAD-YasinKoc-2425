@@ -71,7 +71,8 @@ namespace BenchmarkTool.Admin.Pages
 
             if (!string.IsNullOrWhiteSpace(pwdPassword.Password))
             {
-                _company.Password = HashPassword(pwdPassword.Password);
+                _company.Password = CompanyService.HashPassword(pwdPassword.Password);
+
             }
 
             try
@@ -123,16 +124,5 @@ namespace BenchmarkTool.Admin.Pages
         }
 
 
-        private string HashPassword(string password)
-        {
-            using (var sha = System.Security.Cryptography.SHA256.Create())
-            {
-                var bytes = sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                var sb = new System.Text.StringBuilder();
-                foreach (var b in bytes)
-                    sb.Append(b.ToString("x2"));
-                return sb.ToString();
-            }
-        }
     }
 }

@@ -33,7 +33,8 @@ namespace BenchmarkTool.Admin.Pages
             }
 
             // Hash het wachtwoord
-            string hashedPassword = HashPassword(pwdPassword.Password);
+            string hashedPassword = CompanyService.HashPassword(pwdPassword.Password);
+
 
             Company nieuwBedrijf = new Company
             {
@@ -76,18 +77,6 @@ namespace BenchmarkTool.Admin.Pages
             txtEmail.Text = "";
             pwdPassword.Password = "";
             txtLogin.Text = "";
-        }
-
-        private string HashPassword(string password)
-        {
-            using (SHA256 sha = SHA256.Create())
-            {
-                byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
-                StringBuilder sb = new StringBuilder();
-                foreach (byte b in bytes)
-                    sb.Append(b.ToString("x2"));
-                return sb.ToString();
-            }
         }
     }
 }

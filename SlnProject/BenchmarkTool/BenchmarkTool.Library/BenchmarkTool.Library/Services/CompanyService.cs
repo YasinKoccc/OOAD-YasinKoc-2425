@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Security.Cryptography;
+using System.Text;
 using BenchmarkTool.Library.Models;
 
 namespace BenchmarkTool.Library.Services
@@ -234,9 +236,24 @@ namespace BenchmarkTool.Library.Services
                             {
                                 Id = (int)reader["id"],
                                 Name = reader["name"] as string,
+                                Contact = reader["contact"] as string,
+                                Address = reader["address"] as string,
+                                Zip = reader["zip"] as string,
+                                City = reader["city"] as string,
+                                Country = reader["country"] as string,
+                                Phone = reader["phone"] as string,
                                 Email = reader["email"] as string,
-                                Password = reader["password"] as string, // ✅ voeg dit toe
-                                Logo = reader["logo"] as byte[]
+                                Btw = reader["btw"] as string,
+                                Login = reader["login"] as string,
+                                Password = reader["password"] as string,
+                                RegDate = (DateTime)reader["regdate"],
+                                AcceptDate = reader["acceptdate"] as DateTime?,
+                                LastModified = reader["lastmodified"] as DateTime?,
+                                Status = reader["status"] as string,
+                                Language = reader["language"] as string,
+                                Logo = reader["logo"] as byte[],
+                                Nacecode_Code = reader["nacecode_code"] as string,
+                                Sector = reader["sector"] as string
                             };
                         }
                     }
@@ -247,17 +264,24 @@ namespace BenchmarkTool.Library.Services
         }
 
 
-        private static string HashPassword(string password)
+
+        public static string HashPassword(string password)
         {
-            using (var sha = System.Security.Cryptography.SHA256.Create())
+            using (SHA256 sha = SHA256.Create())
             {
-                var bytes = sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                var sb = new System.Text.StringBuilder();
-                foreach (var b in bytes)
+                // ✅ Use Unicode (UTF-16) encoding to match SQL's NVARCHAR
+                byte[] bytes = sha.ComputeHash(Encoding.Unicode.GetBytes(password));
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in bytes)
                     sb.Append(b.ToString("x2"));
-                return sb.ToString();
+                return sb.ToString().ToUpper();
             }
         }
+
+
+
+
+
 
         public static void DeleteCompany(int companyId)
         {
