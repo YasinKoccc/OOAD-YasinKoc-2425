@@ -107,7 +107,7 @@ namespace BenchmarkTool.Company.Pages
 
         private void BtnToevoegen_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new YearReportEditPage(_company.Id));
+            NavigationService?.Navigate(new YearReportEditPage(_company));
         }
         private void BtnTerug_Click(object sender, RoutedEventArgs e)
         {
@@ -120,7 +120,7 @@ namespace BenchmarkTool.Company.Pages
         {
             if (sender is Button btn && btn.Tag is YearReport report)
             {
-                NavigationService?.Navigate(new YearReportEditPage(_company.Id, report));
+                NavigationService?.Navigate(new YearReportEditPage(_company, report));
             }
         }
 

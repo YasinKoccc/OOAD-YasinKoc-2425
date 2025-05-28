@@ -26,10 +26,10 @@ namespace BenchmarkTool.Company.Pages
         private int _companyId;
         private BenchmarkTool.Library.Models.Company _company;
 
-        public YearReportEditPage(int companyId, YearReport yearReport = null)
+        public YearReportEditPage(BenchmarkTool.Library.Models.Company company, YearReport yearReport = null)
         {
             InitializeComponent();
-            _companyId = companyId;
+            _company = company;
             _yearReport = yearReport;
 
             if (_yearReport != null)
@@ -84,8 +84,9 @@ namespace BenchmarkTool.Company.Pages
         }
         private void BtnTerug_Click(object sender, RoutedEventArgs e)
         {
-            // Ga terug naar het overzicht van jaarrapporten
-            NavigationService?.Navigate(new YearReportEditPage(_company.Id));
+            // After save or on back button:
+            NavigationService?.Navigate(new YearReportsPage(_company));
+
         }
 
     }

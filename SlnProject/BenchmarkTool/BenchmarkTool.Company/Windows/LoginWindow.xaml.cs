@@ -23,15 +23,6 @@ namespace BenchmarkTool.Company.Windows
                 return;
             }
 
-            // Debug output (remove in production)
-#if DEBUG
-            string hash = CompanyService.HashPassword(password);
-            MessageBox.Show(
-                $"Email: '{email}'\nHash: '{hash}'", // Never show raw password
-                "Login Debug"
-            );
-#endif
-
             // Attempt login
             BenchmarkTool.Library.Models.Company bedrijf = CompanyService.Login(email, password);
 
