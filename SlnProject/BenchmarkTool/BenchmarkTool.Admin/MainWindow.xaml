@@ -15,7 +15,6 @@
         <!-- Menu -->
         <StackPanel Background="LightGray" Grid.Column="0">
             <Button Content="Bedrijven beheren" Margin="10" Click="OpenBedrijvenPage_Click"/>
-            <Button Content="Bedrijf toevoegen" Margin="10" Click="OpenBedrijfToevoegen_Click"/>
         </StackPanel>
 
 

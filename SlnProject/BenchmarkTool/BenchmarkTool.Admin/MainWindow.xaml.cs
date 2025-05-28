@@ -32,10 +32,5 @@ namespace BenchmarkTool.Admin
         {
             MainFrame.Navigate(new BedrijvenBeherenPage());
         }
-
-        private void OpenBedrijfToevoegen_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new Pages.BedrijfToevoegenPage());
-        }
     }
 }

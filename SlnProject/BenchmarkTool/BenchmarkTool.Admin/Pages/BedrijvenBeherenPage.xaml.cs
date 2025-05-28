@@ -5,6 +5,7 @@ using System.Windows.Media.Imaging;
 using System.IO;
 using BenchmarkTool.Library.Models;
 using BenchmarkTool.Library.Services;
+using System.Collections.Generic; // Added for List<string> for ComboBox items
 
 namespace BenchmarkTool.Admin.Pages
 {
@@ -114,29 +115,49 @@ namespace BenchmarkTool.Admin.Pages
                         Background = Brushes.IndianRed,
                         Foreground = Brushes.White
                     };
-
                     btnAfkeuren.Click += BtnAfkeuren_Click;
 
                     // Voeg toe aan card
                     card.Children.Add(btnGoedkeuren);
                     card.Children.Add(btnAfkeuren);
-
-
-
                 }
 
 
+                // Add the ComboBox here, next to the "Verwijderen" button
+                ComboBox actionComboBox = new ComboBox
+                {
+                    Tag = company.Id, // Associate the ComboBox with the company ID
+                    Width = 120, // Adjust width as needed
+                    Margin = new Thickness(5, 0, 0, 0), // Add some margin to separate it
+                    VerticalAlignment = VerticalAlignment.Center // Align vertically with other elements
+                };
+
+                // Populate the ComboBox with desired options
+                actionComboBox.Items.Add("Selecteer Actie"); // Default/placeholder item
+                actionComboBox.Items.Add("✅ Approve");
+                actionComboBox.Items.Add("⏳ Hold");
+                actionComboBox.Items.Add("❌ Reject");
+
+                // You can add more options as needed
+
+                // Set the default selected item
+                actionComboBox.SelectedIndex = 0;
+
+                // Attach a SelectionChanged event handler
+                actionComboBox.SelectionChanged += ActionComboBox_SelectionChanged;
+
+                card.Children.Add(actionComboBox);
 
                 BedrijvenPanel.Children.Add(card);
             }
         }
 
-
         private void BtnWijzigen_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int companyId)
             {
-                NavigationService.Navigate(new BedrijfWijzigenPage(companyId, this));
+                // NavigationService.Navigate(new BedrijfWijzigenPage(companyId, this)); // Re-enable if you have this page
+                MessageBox.Show($"Wijzigen button clicked for Company ID: {companyId}");
             }
         }
 
@@ -172,6 +193,36 @@ namespace BenchmarkTool.Admin.Pages
             int id = (int)((Button)sender).Tag;
             CompanyService.UpdateStatus(id, "rejected");
             LaadCompanies();
+        }
+
+        // New event handler for the ComboBox selection change
+        private void ActionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && comboBox.Tag is int companyId)
+            {
+                string selectedAction = comboBox.SelectedItem?.ToString();
+
+                if (string.IsNullOrEmpty(selectedAction))
+                    return;
+
+                switch (selectedAction)
+                {
+                    case "✅ Approve":
+                        CompanyService.UpdateStatus(companyId, "active");
+                        break;
+                    case "⏳ Hold":
+                        CompanyService.UpdateStatus(companyId, "pending");
+                        break;
+                    case "❌ Reject":
+                        CompanyService.UpdateStatus(companyId, "rejected");
+                        break;
+                    default:
+                        return;
+                }
+
+                // Refresh the list to reflect the new status
+                LaadCompanies();
+            }
         }
 
     }
