@@ -18,16 +18,53 @@ namespace BenchmarkTool.Company.Pages
         {
             InitializeComponent();
             _company = company;
-            _reports = YearReportService.GetReportsByCompanyId(_company.Id);
+
+            // Vul sectoren
+            var sectors = CompanyService.GetAllCompanies()
+                .Select(c => c.Sector)
+                .Where(s => !string.IsNullOrEmpty(s))
+                .Distinct()
+                .OrderBy(s => s)
+                .ToList();
+            sectors.Insert(0, "Alle sectoren");
+            cmbSector.ItemsSource = sectors;
+            cmbSector.SelectedIndex = 0;
+
+            // Vul jaren
+            var years = YearReportService.GetAllYearReports()
+                .Select(r => r.Year)
+                .Distinct()
+                .OrderByDescending(y => y)
+                .ToList();
+            years.Insert(0, 0); // 0 = alle jaren
+            cmbYear.ItemsSource = years;
+            cmbYear.SelectedIndex = 0;
+
+            DrawChart();
+        }
+        private void Filter_Changed(object sender, SelectionChangedEventArgs e)
+        {
             DrawChart();
         }
 
+
         private void DrawChart()
         {
-            if (_reports.Count == 0) return;
+            string selectedSector = cmbSector.SelectedItem as string;
+            if (selectedSector == "Alle sectoren") selectedSector = null;
 
-            double maxFte = _reports.Max(r => (double)r.Fte);
-            double maxAvg = _reports.Max(r => YearReportService.GetAverageFteByYear(r.Year));
+            int selectedYear = (cmbYear.SelectedItem is int y && y != 0) ? y : (int?)null ?? 0;
+
+            var benchmarkRows = YearReportService.GetFilteredYearReports(selectedSector, selectedYear == 0 ? (int?)null : selectedYear);
+
+            if (benchmarkRows == null || benchmarkRows.Count == 0) return;
+
+            // Only show your own company's reports from the filtered list
+            var myReports = benchmarkRows.Where(br => br.Company.Id == _company.Id).Select(br => br.Report).ToList();
+            if (myReports.Count == 0) return;
+
+            double maxFte = myReports.Max(r => (double)r.Fte);
+            double maxAvg = myReports.Max(r => YearReportService.GetAverageFteByYear(r.Year));
             double max = System.Math.Max(maxFte, maxAvg);
 
             double barWidth = 60;
@@ -38,7 +75,7 @@ namespace BenchmarkTool.Company.Pages
             ChartCanvas.Children.Clear();
 
             int i = 0;
-            foreach (var report in _reports)
+            foreach (var report in myReports)
             {
                 double avg = YearReportService.GetAverageFteByYear(report.Year);
 
@@ -81,7 +118,7 @@ namespace BenchmarkTool.Company.Pages
             // Legend
             var legendYour = new TextBlock
             {
-                Text = "Jouw bedrijf",
+                Text = _company.Name, // <-- Gebruik de bedrijfsnaam
                 Foreground = Brushes.SteelBlue,
                 FontWeight = FontWeights.Bold
             };
@@ -98,7 +135,9 @@ namespace BenchmarkTool.Company.Pages
             Canvas.SetLeft(legendAvg, 10);
             Canvas.SetTop(legendAvg, 30);
             ChartCanvas.Children.Add(legendAvg);
+
         }
+
 
         private void BtnTerug_Click(object sender, RoutedEventArgs e)
         {

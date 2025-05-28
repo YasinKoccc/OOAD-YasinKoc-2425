@@ -4,16 +4,21 @@
       Title="FTE Benchmark Grafiek">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Canvas x:Name="ChartCanvas" Background="White" Margin="10" Grid.Row="0"/>
-        <Button Content="Terug"
-                Grid.Row="1"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Margin="10"
-                Width="100"
-                Click="BtnTerug_Click"/>
+        <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0" HorizontalAlignment="Left">
+            <TextBlock Text="Sector:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <ComboBox x:Name="cmbSector" Width="150" Margin="0,0,20,0" SelectionChanged="Filter_Changed"/>
+            <TextBlock Text="Jaar:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <ComboBox x:Name="cmbYear" Width="100" SelectionChanged="Filter_Changed"/>
+        </StackPanel>
+
+        <Viewbox Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Canvas x:Name="ChartCanvas" Background="White" Width="350" Height="260"/>
+        </Viewbox>
+        <Button Content="Terug" Grid.Row="2" HorizontalAlignment="Left" Margin="10" Click="BtnTerug_Click"/>
     </Grid>
+
 </Page>
