@@ -157,6 +157,21 @@ namespace BenchmarkTool.Library.Services
             }
         }
 
+        public static double GetAverageFteByYear(int year)
+        {
+            using (var conn = DatabaseHelper.GetConnection())
+            {
+                conn.Open();
+                using (var cmd = new SqlCommand("SELECT AVG(CAST(Fte AS FLOAT)) FROM Yearreports WHERE [year] = @year", conn))
+                {
+                    cmd.Parameters.AddWithValue("@year", year);
+                    var result = cmd.ExecuteScalar();
+                    return result != DBNull.Value ? Convert.ToDouble(result) : 0.0;
+                }
+            }
+        }
+
+
 
 
 

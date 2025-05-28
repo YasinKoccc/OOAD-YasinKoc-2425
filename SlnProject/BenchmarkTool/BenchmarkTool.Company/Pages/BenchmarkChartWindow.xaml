@@ -1,0 +1,19 @@
+﻿<Page x:Class="BenchmarkTool.Company.Pages.BenchmarkChartPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="FTE Benchmark Grafiek">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Canvas x:Name="ChartCanvas" Background="White" Margin="10" Grid.Row="0"/>
+        <Button Content="Terug"
+                Grid.Row="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Margin="10"
+                Width="100"
+                Click="BtnTerug_Click"/>
+    </Grid>
+</Page>

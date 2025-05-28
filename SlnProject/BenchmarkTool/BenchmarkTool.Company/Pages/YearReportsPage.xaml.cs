@@ -45,7 +45,20 @@ namespace BenchmarkTool.Company.Pages
 
             foreach (YearReport report in reports)
             {
-                // Info-tekst
+                // Benchmark: get average FTE for this year  
+                double avgFte = YearReportService.GetAverageFteByYear(report.Year);
+
+                // Add a benchmark TextBlock  
+                var benchmarkText = new TextBlock
+                {
+                    Text = $"Gemiddelde FTE in {report.Year}: {avgFte:F2}",
+                    FontSize = 12,
+                    Foreground = Brushes.DarkBlue,
+                    Margin = new Thickness(10, 0, 0, 0),
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                // Info-tekst  
                 var infoText = new TextBlock
                 {
                     Text = $"Jaar: {report.Year} - FTE: {report.Fte}",
@@ -53,7 +66,7 @@ namespace BenchmarkTool.Company.Pages
                     VerticalAlignment = VerticalAlignment.Center
                 };
 
-                // Bewerken knop
+                // Bewerken knop  
                 Button btnEdit = new Button
                 {
                     Content = "Bewerk",
@@ -63,7 +76,7 @@ namespace BenchmarkTool.Company.Pages
                 };
                 btnEdit.Click += BtnBewerkRapport_Click;
 
-                // Verwijderen knop
+                // Verwijderen knop  
                 Button btnDelete = new Button
                 {
                     Content = "Verwijder",
@@ -75,7 +88,7 @@ namespace BenchmarkTool.Company.Pages
                 };
                 btnDelete.Click += BtnVerwijderRapport_Click;
 
-                // Horizontale rij maken
+                // Horizontale rij maken  
                 StackPanel row = new StackPanel
                 {
                     Orientation = Orientation.Horizontal,
@@ -84,8 +97,9 @@ namespace BenchmarkTool.Company.Pages
                 row.Children.Add(infoText);
                 row.Children.Add(btnEdit);
                 row.Children.Add(btnDelete);
+                row.Children.Add(benchmarkText); // Moved this line after 'row' declaration  
 
-                // Border rond rij
+                // Border rond rij  
                 var border = new Border
                 {
                     Background = Brushes.LightGray,
@@ -97,8 +111,7 @@ namespace BenchmarkTool.Company.Pages
                     Child = row
                 };
 
-
-                ReportsPanel.Children.Add(border); // ✅ Correct naamgebruik
+                ReportsPanel.Children.Add(border); // ✅ Correct naamgebruik  
             }
         }
 
@@ -144,6 +157,9 @@ namespace BenchmarkTool.Company.Pages
             }
         }
 
-
+        private void BtnToonGrafiek_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new BenchmarkChartPage(_company));
+        }
     }
 }

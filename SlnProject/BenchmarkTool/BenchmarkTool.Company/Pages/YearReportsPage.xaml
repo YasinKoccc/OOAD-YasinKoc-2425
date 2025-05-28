@@ -21,6 +21,9 @@
         </StackPanel>
 
 
+        <Button Content="Toon Grafiek" Margin="10" Width="120" Click="BtnToonGrafiek_Click"/>
+
+
 
         <ScrollViewer Grid.Row="1">
             <StackPanel x:Name="ReportsPanel" />
