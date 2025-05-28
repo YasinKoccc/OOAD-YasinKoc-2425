@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BenchmarkTool.Admin.Pages;
+using BenchmarkTool.Admin.Windows;
+
 
 
 namespace BenchmarkTool.Admin
@@ -31,6 +33,16 @@ namespace BenchmarkTool.Admin
         private void OpenBedrijvenPage_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new BedrijvenBeherenPage());
+        }
+
+        private void Uitloggen_Click(object sender, RoutedEventArgs e)
+        {
+            // Terug naar login window
+            var loginWindow = new LoginWindow();
+            loginWindow.Show();
+
+            // Sluit MainWindow
+            Window.GetWindow(this).Close();
         }
     }
 }

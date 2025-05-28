@@ -156,10 +156,11 @@ namespace BenchmarkTool.Admin.Pages
         {
             if (sender is Button btn && btn.Tag is int companyId)
             {
-                // NavigationService.Navigate(new BedrijfWijzigenPage(companyId, this)); // Re-enable if you have this page
-                MessageBox.Show($"Wijzigen button clicked for Company ID: {companyId}");
+                // Navigate to the edit page, passing the companyId and this page as parent
+                NavigationService?.Navigate(new BedrijfWijzigenPage(companyId, this));
             }
         }
+
 
         private void BtnVerwijderen_Click(object sender, RoutedEventArgs e)
         {

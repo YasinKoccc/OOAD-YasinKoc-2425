@@ -13,9 +13,13 @@
         </Grid.ColumnDefinitions>
 
         <!-- Menu -->
-        <StackPanel Background="LightGray" Grid.Column="0">
+        <StackPanel Background="LightGray" Grid.Column="0" VerticalAlignment="Stretch">
             <Button Content="Bedrijven beheren" Margin="10" Click="OpenBedrijvenPage_Click"/>
+            <StackPanel VerticalAlignment="Bottom" Margin="10" Orientation="Vertical">
+                <Button Content="Uitloggen" Click="Uitloggen_Click"/>
+            </StackPanel>
         </StackPanel>
+
 
 
         <!-- Frame voor inhoud -->

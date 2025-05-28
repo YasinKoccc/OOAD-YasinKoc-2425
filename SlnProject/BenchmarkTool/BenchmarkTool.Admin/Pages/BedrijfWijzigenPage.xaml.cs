@@ -107,20 +107,19 @@ namespace BenchmarkTool.Admin.Pages
             if (dialog.ShowDialog() == true)
             {
                 string chosenFileName = dialog.FileName;
-
                 imgLogoPreview.Source = new BitmapImage(new Uri(chosenFileName));
+
+                // Correct: assign the file as bytes to the logo property
+                _company.Logo = File.ReadAllBytes(chosenFileName);
             }
         }
 
 
 
+
         private void Annuleren_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = Application.Current.MainWindow as BenchmarkTool.Admin.MainWindow;
-            if (mainWindow != null)
-            {
-                mainWindow.MainFrame.Navigate(new BedrijvenBeherenPage());
-            }
+            NavigationService?.Navigate(new BedrijvenBeherenPage());
         }
 
 
