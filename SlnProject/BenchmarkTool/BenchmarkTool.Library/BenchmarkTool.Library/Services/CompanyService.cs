@@ -43,7 +43,7 @@ namespace BenchmarkTool.Library.Services
                         LastModified = reader["lastmodified"] as DateTime?,
                         Status = reader["status"] as string,
                         Language = reader["language"] as string,
-                        Logo = reader["logo"] as byte[],
+                        LogoData = reader["logo"] as byte[],
                         Nacecode_Code = reader["nacecode_code"] as string,
                         Sector = reader["sector"] as string,
 
@@ -129,7 +129,7 @@ namespace BenchmarkTool.Library.Services
                                 LastModified = reader["lastmodified"] as DateTime?,
                                 Status = reader["status"] as string,
                                 Language = reader["language"] as string,
-                                Logo = reader["logo"] as byte[],
+                                LogoData = reader["logo"] as byte[],
                                 Nacecode_Code = reader["nacecode_code"] as string,
                                 Sector = reader["sector"] as string,
 
@@ -188,7 +188,7 @@ namespace BenchmarkTool.Library.Services
                     cmd.Parameters.AddWithValue("@lastmodified", company.LastModified);
                     cmd.Parameters.AddWithValue("@status", company.Status);
                     cmd.Parameters.AddWithValue("@language", company.Language);
-                    cmd.Parameters.AddWithValue("@logo", (object)company.Logo ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@logo", (object)company.LogoData ?? DBNull.Value);
                     cmd.Parameters.AddWithValue("@nacecode_code", company.Nacecode_Code);
 
                     cmd.ExecuteNonQuery();
@@ -251,7 +251,7 @@ namespace BenchmarkTool.Library.Services
                                 LastModified = reader["lastmodified"] as DateTime?,
                                 Status = reader["status"] as string,
                                 Language = reader["language"] as string,
-                                Logo = reader["logo"] as byte[],
+                                LogoData = reader["logo"] as byte[],
                                 Nacecode_Code = reader["nacecode_code"] as string,
                                 Sector = reader["sector"] as string
                             };

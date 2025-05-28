@@ -110,7 +110,7 @@ namespace BenchmarkTool.Admin.Pages
                 imgLogoPreview.Source = new BitmapImage(new Uri(chosenFileName));
 
                 // Correct: assign the file as bytes to the logo property
-                _company.Logo = File.ReadAllBytes(chosenFileName);
+                _company.LogoData = File.ReadAllBytes(chosenFileName);
             }
         }
 

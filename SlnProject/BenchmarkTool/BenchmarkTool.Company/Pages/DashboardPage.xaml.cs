@@ -27,7 +27,7 @@ namespace BenchmarkTool.Company.Pages
             txtEmail.Text = _bedrijf.Email;
             txtStatus.Text = _bedrijf.Status;
 
-            imgLogo.Source = ByteArrayToBitmapImage(_bedrijf.Logo);
+            imgLogo.Source = ByteArrayToBitmapImage(_bedrijf.LogoData);
 
         }
         private BitmapImage ByteArrayToBitmapImage(byte[] imageData)

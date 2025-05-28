@@ -32,10 +32,10 @@ namespace BenchmarkTool.Admin.Pages
                 };
 
                 // Logo
-                if (company.Logo != null)
+                if (company.LogoData != null)
                 {
                     BitmapImage img = new BitmapImage();
-                    using (var ms = new MemoryStream(company.Logo))
+                    using (var ms = new MemoryStream(company.LogoData))
                     {
                         img.BeginInit();
                         img.CacheOption = BitmapCacheOption.OnLoad;

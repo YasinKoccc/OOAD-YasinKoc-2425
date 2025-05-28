@@ -25,12 +25,11 @@ namespace BenchmarkTool.Library.Models
         public DateTime? LastModified { get; set; }
         public string Status { get; set; }
         public string Language { get; set; }
-        public byte[] Logo { get; set; }
+        public byte[] LogoData { get; set; }
         public string Nacecode_Code { get; set; }
 
         // Toevoegen:
         public string Sector { get; set; }
-        public byte[] LogoData { get; set; }
 
     }
 }
